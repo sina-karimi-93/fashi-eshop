@@ -1,0 +1,97 @@
+{% extends 'shared/MainLayout.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- Username -->
+                            <div class="group-input bg-s my-2">
+                                <label for="{{ user_form.username.id_for_label }}">{{ user_form.username.label }}</label>
+                                {{ user_form.username }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- First Name -->
+                            <div class="group-input bg-s my-2">
+                                <label for="{{ user_form.first_name.id_for_label }}">{{ user_form.first_name.label }}</label>
+                                {{ user_form.first_name }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Last Name -->
+                            <div class="group-input bg-s my-2">
+                                <label for="{{ user_form.last_name.id_for_label }}">{{ user_form.last_name.label }}</label>
+                                {{ user_form.last_name }}
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Email -->
+                            <div class="group-input bg-s my-2">
+                                <label for="{{ user_form.email.id_for_label }}">{{ user_form.email.label }}</label>
+                                {{ user_form.email }}
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Phone -->
+                            <div class="group-input my-2">
+                                <label for="{{ profile_form.phone.id_for_label }}">{{ profile_form.phone.label }}</label>
+                                {{ profile_form.phone }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Date of Birth -->
+                            <div class="group-input my-2">
+                                <label for="{{ profile_form.date_of_birth.id_for_label }}">{{ profile_form.date_of_birth.label }}</label>
+                                {{ profile_form.date_of_birth }}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Image -->
+                    <div class="group-input my-2 border p-2 my-2">
+                        <label for="{{ profile_form.image.id_for_label }}">{{ profile_form.image.label }}</label>
+                        {{ profile_form.image }}
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-warning btn-block">Update</button>
+
+                </form>
+            </div>
+        </div>
+
+        <hr>
+        <table class="table">
+            <tr>
+                <td class="table-bordered text-center">First Name</td>
+                <th class="table-bordered text-center">{{ user.first_name }}</th>
+            </tr>
+            <tr>
+                <td class="table-bordered text-center">Last Name</td>
+                <th class="table-bordered text-center">{{ user.last_name }}</th>
+            </tr>
+            <tr>
+                <td class="table-bordered text-center">Email</td>
+                <th class="table-bordered text-center">{{ user.email }}</th>
+            </tr>
+            <tr>
+                <td class="table-bordered text-center">UserName</td>
+                <th class="table-bordered text-center">{{ user.username }}</th>
+            </tr>
+
+            <tr>
+                <td class="table-bordered text-center">Image</td>
+                <th class="table-bordered text-center">
+                    <img class="rounded-circle" src="{{ user.userprofile.image.url }}" width="100" height="100" alt="">
+                </th>
+            </tr>
+        </table>
+    </div>
+{% endblock %}

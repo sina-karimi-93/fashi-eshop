@@ -1,0 +1,55 @@
+{% extends 'shared/MainLayout.html' %}
+{% load static %}
+{% block content %}
+    <div class="register-login-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    <div class="login-form">
+                        <h2>Login</h2>
+
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <!-- Username -->
+                            <div class="group-input">
+                                <label for="{{ login_form.username.id_for_label }}">{{ login_form.username.label }}</label>
+                                {{ login_form.username }}
+                                {% for erros in login_form.username.errors %}
+                                    <p class="text-danger">
+                                        {{ erros }}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                            <!-- Password -->
+                            <div class="group-input">
+                                <label for="{{ login_form.password.id_for_label }}">{{ login_form.password.label }}</label>
+                                {{ login_form.password }}
+                                {% for errors in login_form.password.errors %}
+                                    <p class="text-danger">{{ errors }}</p>
+                                {% endfor %}
+                            </div>
+
+                            <div class="group-input gi-check">
+                                <div class="gi-more">
+                                    <label for="save-pass">
+                                        Save Password
+                                        <input type="checkbox" id="save-pass">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <a href="#" class="forget-pass">Forget your Password</a>
+                                </div>
+                            </div>
+                            <button type="submit" class="site-btn login-btn">Log In</button>
+                        </form>
+
+
+                        <div class="switch-login">
+                            <a href="/register" class="or-login">Or Create An Account</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,11 @@
+<div class="filter-widget">
+    <h4 class="fw-title">Categories</h4>
+    <ul class="filter-catagories">
+            <li><a class="text-capitalize" href="/products">All</a></li>
+
+{% for category in categories %}
+        <li><a class="text-capitalize" href="/products/category/{{ category.url }}">{{ category.title }}</a></li>
+{% endfor %}
+
+    </ul>
+</div>

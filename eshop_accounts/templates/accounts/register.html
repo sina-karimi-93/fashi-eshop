@@ -1,0 +1,76 @@
+{% extends 'shared/MainLayout.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="register-login-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    <div class="register-form">
+                        <h2>Register</h2>
+                        <form method="post">
+                            {% csrf_token %}
+                            <!-- First Name -->
+                            <div class="group-input">
+                                <label for="{{ register_form.first_name.id_for_label }}">{{ register_form.first_name.label }}</label>
+                                {{ register_form.first_name }}
+
+                                {% for errors in register_form.first_name.errors %}
+                                    <p class="text-danger">{{ errors }}</p>
+                                {% endfor %}
+                            </div>
+                            <!-- Last Name -->
+                            <div class="group-input">
+                                <label for="{{ register_form.last_name.id_for_label }}">{{ register_form.last_name.label }}</label>
+                                {{ register_form.last_name }}
+
+                                {% for errors in register_form.last_name.errors %}
+                                    <p class="text-danger">{{ errors }}</p>
+                                {% endfor %}
+                            </div>
+                            <!-- Username -->
+                            <div class="group-input">
+                                <label for="{{ register_form.username.id_for_label }}">{{ register_form.username.label }}</label>
+                                {{ register_form.username }}
+
+                                {% for errors in register_form.username.errors %}
+                                    <p class="text-danger">{{ errors }}</p>
+                                {% endfor %}
+                            </div>
+                            <!-- Email -->
+                            <div class="group-input">
+                                <label for="{{ register_form.email.id_for_label }}">{{ register_form.email.label }}</label>
+                                {{ register_form.email }}
+                                {% for errors in register_form.email.errors %}
+                                    <p class="text-danger">{{ errors }}</p>
+                                {% endfor %}
+                            </div>
+                            <!-- Password -->
+                            <div class="group-input">
+                                <label for="{{ register_form.password.id_for_label }}">{{ register_form.password.label }}</label>
+                                {{ register_form.password }}
+                                {% for errors in register_form.password.errors %}
+                                    <p class="text-danger">{{ errors }}</p>
+                                {% endfor %}
+                            </div>
+                            <!-- Re-Password -->
+                            <div class="group-input">
+                                <label for="{{ register_form.re_password.id_for_label }}">{{ register_form.re_password.label }}</label>
+                                {{ register_form.re_password }}
+                                {% for errors in register_form.re_password.errors %}
+                                    <p class="text-danger">{{ errors }}</p>
+                                {% endfor %}
+                            </div>
+
+                            <button type="submit" class="site-btn register-btn">REGISTER</button>
+                        </form>
+
+                        <div class="switch-login">
+                            <a href="/login" class="or-login">Or Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,156 @@
+{% load static %}
+<!-- Header Section Begin -->
+<header class="header-section">
+    <div class="header-top">
+        <div class="container">
+            <div class="ht-left">
+                <div class="mail-service">
+                    <i class=" fa fa-envelope"></i>
+                    {{ user.email }}
+                </div>
+                <div class="phone-service">
+                    <i class=" fa fa-phone"></i>
+                    {{ user.userprofile.phone }}
+                </div>
+            </div>
+            <div class="ht-right">
+                {% if user.is_authenticated %}
+                    <a href="/profile" class="text-dark d-block">Hello, {{ user.first_name }} <img
+                            class="rounded-circle"
+                            src="{{ user.userprofile.image.url }}" width="40" height="40" alt=""></a>
+                {% else %}
+                    <a href="/login" class="login-panel"><i class="fa fa-user"></i>Login</a>
+                {% endif %}
+
+
+                <div class="top-social">
+                    <a href="#"><i class="ti-facebook"></i></a>
+                    <a href="#"><i class="ti-twitter-alt"></i></a>
+                    <a href="#"><i class="ti-linkedin"></i></a>
+                    <a href="#"><i class="ti-pinterest"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="inner-header">
+            <div class="row">
+                <div class="col-lg-2 col-md-2">
+                    <div class="logo">
+                        <a href="./index.html">
+                            <img src="{% static 'img/logo.png' %}" alt="">
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-7 col-md-7">
+                    <div class="advanced-search">
+                        {% include 'shared/search_products_input_component.html' %}
+                    </div>
+                </div>
+
+
+                {% if user.is_authenticated %}
+                    {% with total_items=cart|length %}
+                        {% if total_items > 0 %}
+                            <div class="col-lg-3 text-right col-md-3">
+                                <ul class="nav-right">
+                                    <li class="cart-icon">
+                                        <a href="{% url 'cart:cart_detail' %}">
+                                            <i class="icon_bag_alt"></i>
+                                            <span>{{ total_items }}</span>
+                                        </a>
+                                        <div class="cart-hover">
+                                            {% for item in cart %}
+                                                {% with product=item.product %}
+                                                    <div class="select-items">
+                                                        <table>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td class="si-pic">
+                                                                    <img class="rounded-circle" src="{{ product.image.url }}" alt=""
+                                                                         width="90px" height="90px">
+                                                                </td>
+                                                                <td class="si-text">
+                                                                    <div class="product-selected">
+                                                                        <p>${{ item.price }} x {{ item.quantity }}</p>
+                                                                        <h6>{{ product.title }}</h6>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="close-td first-row">
+                                                                    <form action="{% url "cart:cart_remove" product.id %}"
+                                                                          method="POST">
+                                                                        <button type="submit" class="btn-sm border-0 rounded-circle bg-warning">x</button>
+                                                                        {% csrf_token %}
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                {% endwith %}
+                                            {% endfor %}
+                                            <div class="select-total">
+                                                <span>total:</span>
+                                                <h5>${{ cart.get_total_price }}</h5>
+                                            </div>
+                                            <div class="select-button">
+                                                <a href="{% url 'cart:cart_detail' %}" class="primary-btn view-card">VIEW
+                                                    CARD</a>
+                                                <a href="{% url "orders:order_create" %}" class="primary-btn checkout-btn">CHECK OUT</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="cart-price">${{ cart.get_total_price }}</li>
+                                </ul>
+                            </div>
+                        {% else %}
+                            <div class="m-1 mt-2 ml-3">
+                                <p>Your Cart is Empty <i class="fa fa-credit-card"></i></p>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="nav-item">
+        <div class="container">
+            <nav class="nav-menu mobile-menu">
+                <ul>
+                    <li class=""><a href="/">Home</a></li>
+                    <li class=""><a href="/products">Shop</a>
+                    </li>
+                    <li><a>Collection</a>
+                        <ul class="dropdown">
+                            <li><a href="/products/category/man">Men's</a></li>
+                            <li><a href="/products/category/woman">Women's</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/contact-us">Contact</a></li>
+                    <li><a href="#">Pages</a>
+                        <ul class="dropdown">
+                            <li><a href="{% url 'cart:cart_detail' %}">Shopping Cart</a></li>
+                            <li><a href="./check-out.html">Checkout</a></li>
+                            <li><a href="./faq.html">Faq</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Account</a>
+                        <ul class="dropdown">
+                            {% if user.is_authenticated %}
+                                <li><a href="/logout/">Logout</a></li>
+                                <li><a href="/profile">Profile</a></li>
+                            {% else %}
+                                <li><a href="/register">Register</a></li>
+                                <li><a href="/login">Login</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <div id="mobile-menu-wrap"></div>
+        </div>
+    </div>
+</header>
+<!-- Header End -->

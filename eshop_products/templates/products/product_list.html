@@ -1,0 +1,74 @@
+{% extends 'Shared/MainLayout.html' %}
+{% load static %}
+{% load render_partial %}
+{% block title %}Shop{% endblock %}
+{% block content %}
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="#"><i class="fa fa-home"></i> Home</a>
+                        <span>Shop</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="product-shop spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
+                    {% render_partial 'products_categories_partial' %}
+
+                    <div class="filter-widget">
+                        {% render_partial 'products_tag_partial' %}
+                    </div>
+                </div>
+                <div class="col-lg-9 order-1 order-lg-2">
+                    <div class="product-list">
+                        <div class="row">
+                            {% for product in page_obj %}
+                                {% include 'products/product_item_component.html' with product=product %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Pagination-->
+                    <nav aria-label="Page navigation example" class="mt-5">
+                        <ul class="pagination justify-content-center">
+
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+                                       tabindex="-1">Previous</a>
+                                </li>
+                            {% endif %}
+
+                            {% for page in paginator.page_range %}
+                                {% if page_obj %}
+                                    {% if page <= page_obj.number|add:3 and page >= page_obj.number|add:-3 %}
+                                        {% if page == page_obj.number %}
+                                            <li class="page-item active"><a class="page-link"
+                                                                            href="?page={{ page }}">{{ page }}</a></li>
+                                        {% else %}
+                                            <li class="page-item "><a class="page-link"
+                                                                      href="?page={{ page }}">{{ page }}</a></li>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                </li>
+                            {% endif %}
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

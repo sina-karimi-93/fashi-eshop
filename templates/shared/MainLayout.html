@@ -1,0 +1,40 @@
+{% load render_partial %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Fashi Template">
+    <meta name="keywords" content="Fashi, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title%}{%endblock%}</title>
+    {% include 'Shared/_header_links.html' %}
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    {% render_partial 'header' %}
+    {% if messages %}
+    <ul class="bg-warning py-2">
+        {% for message in messages %}
+        <li class="font-weight-bold text-dark text-center">
+            {{ message|safe }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+
+    {% render_partial 'footer' %}
+
+    {% include 'Shared/_footer_links.html' %}
+
+</body>
+
+</html>

@@ -1,0 +1,179 @@
+{% extends 'shared/MainLayout.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block title %}
+    {{ product.title }}
+{% endblock %}
+
+{% block content %}
+
+    <section class="product-shop spad page-details">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-3">
+                    {% render_partial 'products_categories_partial' %}
+                    <div class="filter-widget">
+                        {% render_partial 'products_tag_partial' %}
+                    </div>
+                </div>
+
+
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="product-pic-zoom">
+                                <img class="product-big-img" src="{{ product.image.url }}" alt="">
+                                <div class="zoom-icon">
+                                    <i class="fa fa-search-plus"></i>
+                                </div>
+                            </div>
+                            <div class="product-thumbs">
+                                <div class="product-thumbs-track ps-slider owl-carousel">
+                                    <div class="pt" data-imgbigurl="{{ product.image.url }}"><img
+                                            src="{{ product.image.url }}" alt=""></div>
+                                    {% for gallery in galleries %}
+                                        <div class="pt active" data-imgbigurl="{{ gallery.image.url }}"><img
+                                                src="{{ gallery.image.url }}" alt=""></div>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="product-details">
+                                <div class="pd-title">
+                                    <h3>{{ product.title }}</h3>
+                                    <hr>
+                                </div>
+
+                                <div class="pd-desc">
+                                    <p>{{ product.description }}</p>
+                                    <h4>{{ product.price }}<span>{{ product.before_price }}</span></h4>
+                                </div>
+
+                                <!-- Size -->
+                                <div class="pd-size-choose">
+                                    <form method="post">
+                                        <div class="sc-item">
+                                            <input type="radio" id="sm-size">
+                                            <label for="sm-size">s</label>
+                                        </div>
+                                        <div class="sc-item">
+                                            <input type="radio" id="md-size">
+                                            <label for="md-size">m</label>
+                                        </div>
+                                        <div class="sc-item">
+                                            <input type="radio" id="lg-size">
+                                            <label for="lg-size">l</label>
+                                        </div>
+                                        <div class="sc-item">
+                                            <input type="radio" id="xl-size">
+                                            <label for="xl-size">xs</label>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <form action="{% url "cart:cart_add" product.id %}" method="POST">
+                                    {{ cart_product_form }}
+                                    {% csrf_token %}
+                                    <br>
+                                    <button type="submit" class="primary-btn pd-cart btn-block">Add to cart</button>
+                                </form>
+
+
+                                <ul class="pd-tags">
+                                    <li><span>CATEGORIES</span>: {% for category in product_category %}
+                                        {{ category }}
+                                    {% endfor %}
+                                    </li>
+                                    {% if tags %}
+                                        <li><span>TAGS</span>:
+                                            {% for tag in tags %}
+                                                <a class="text-dark"
+                                                   href="/products/search?q={{ tag.title }}">{{ tag.title }}</a>
+                                            {% endfor %}
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                                <div class="pd-share">
+                                    <div class="pd-social">
+                                        <a href="#"><i class="ti-facebook"></i></a>
+                                        <a href="#"><i class="ti-twitter-alt"></i></a>
+                                        <a href="#"><i class="ti-linkedin"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="customer-review-option">
+                        {% if new_comment %}
+                            <h4 class="text-success">Your comment has been added.</h4>
+                            <br>
+                            <br>
+                        {% endif %}
+                        {% with comments.count as total_comment %}
+                            <h4>{{ total_comment }} comment{{ total_comment|pluralize }}</h4>
+                        {% endwith %}
+                        <div class="comment-option">
+
+                            {% for comment in comments %}
+                                <div class="my-5">
+                                    <div class="co-item border p-2">
+                                        <div class="avatar-pic">
+                                            <img src="{{ comment.user.userprofile.image.url }}"
+                                                 alt="">
+                                        </div>
+                                        <div class="avatar-text">
+                                            <h5>{{ comment.user.first_name }}
+                                                <span>{{ comment.created }}</span>
+                                            </h5>
+                                            <div class="at-reply d-flex justify-content-around">
+                                                <p class="text-dark font-weight-bold">{{ comment.body }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if request.user == comment.user %}
+                                        <form action="" method="get">
+                                            <input type="submit" value="Delete"
+                                                   name="{{ comment.id }}"
+                                                   class="btn btn-block btn-sm btn-danger text-center">
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            {% empty %}
+                                <p>There are no Comments yet!</p>
+                            {% endfor %}
+                        </div>
+
+                        {% if request.user.is_authenticated %}
+                            <div class="leave-comment">
+                                <h4>Leave A Comment</h4>
+                                <form action="#" class="comment-form" method="post">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            {{ comment_form.body }}
+                                            <button type="submit" class="site-btn btn-block">Add
+                                                Comment
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        {% else %}
+                            <div class="bg-warning p-1 rounded">
+                                <h4 class="text-dark text-center flex-wrap">Please
+                                    <a class="text-white" href="/login">Login</a>
+                                    to add Comment's</h4>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

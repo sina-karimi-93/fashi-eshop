@@ -1,0 +1,6 @@
+<h4 class="fw-title">Tags</h4>
+<div class="fw-tags">
+    {% for tag in tags %}
+        <a href="/products/search?q={{ tag.title }}">{{ tag.title }}</a>
+    {% endfor %}
+</div>
